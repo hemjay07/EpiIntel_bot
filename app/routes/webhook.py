@@ -10,7 +10,7 @@ bot = WhatsAppBot()
 logger = logging.getLogger(__name__)
 
 @router.post("/webhook")
-async def webhook_handler(
+def webhook_handler(
     Body: str = Form(...),
     From: Optional[str] = Form(None),
     To: Optional[str] = Form(None)
@@ -21,12 +21,12 @@ async def webhook_handler(
         logger.info(f"Incoming message - From: {From}, Body: {Body}")
         
         # Process the message
-        response_text, response_data = await bot.process_message(Body)
+        response_text, response_data = bot.process_message(Body)
         
         # Log the response we're about to send
         logger.info(f"Sending response: {response_text}")
         
-        # Create TwiML response - this is what Twilio expects
+        # Create TwiML response
         resp = MessagingResponse()
         resp.message(response_text)
         
